@@ -107,7 +107,8 @@ PRODUCT_PACKAGES += \
 #    libexynoscamera
 
 PRODUCT_PACKAGES += \
-    gps.universal5420
+    gps.universal5420 \
+    libdmitry
 
 PRODUCT_PACKAGES += \
     libion \
@@ -171,6 +172,10 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_PACKAGES += \
     strace
+
+
+PRODUCT_PACKAGES += \
+    libsamsung_symbols
 
 # hardware/samsung/AdvancedDisplay (MDNIE)
 PRODUCT_PACKAGES += \
