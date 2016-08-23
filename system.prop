@@ -32,3 +32,5 @@ ro.securestorage.support=true
 # Wifi
 wifi.interface=wlan0
 
+# Storage
+ro.sdcardfs.enable=true
