@@ -24,23 +24,23 @@ PRODUCT_PACKAGES += \
 
 # Keylayouts
 PRODUCT_COPY_FILES += \
-    device/samsung/chagall-klimt-common/keylayout/sec_touchkey.kl:system/usr/keylayout/sec_touchkey.kl \
-    device/samsung/chagall-klimt-common/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl
+    device/samsung/tabs-common/keylayout/sec_touchkey.kl:system/usr/keylayout/sec_touchkey.kl \
+    device/samsung/tabs-common/keylayout/gpio-keys.kl:system/usr/keylayout/gpio-keys.kl
 
 # IDC
 PRODUCT_COPY_FILES += \
-    device/samsung/chagall-klimt-common/idc/Synaptics_HID_TouchPad.idc:system/usr/idc/Synaptics_HID_TouchPad.idc
+    device/samsung/tabs-common/idc/Synaptics_HID_TouchPad.idc:system/usr/idc/Synaptics_HID_TouchPad.idc
 
 PRODUCT_COPY_FILES += \
-    device/samsung/chagall-klimt-common/audio/audio_effects.conf:system/etc/audio_effects.conf
+    device/samsung/tabs-common/audio/audio_effects.conf:system/etc/audio_effects.conf
 
 # Media profile
 PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:system/etc/media_codecs_google_video.xml \
-    device/samsung/chagall-klimt-common/media/media_profiles.xml:system/etc/media_profiles.xml \
-    device/samsung/chagall-klimt-common/media/media_codecs.xml:system/etc/media_codecs.xml
+    device/samsung/tabs-common/media/media_profiles.xml:system/etc/media_profiles.xml \
+    device/samsung/tabs-common/media/media_codecs.xml:system/etc/media_codecs.xml
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
@@ -62,11 +62,8 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:system/etc/permissions/android.hardware.audio.low_latency.xml \
     frameworks/native/data/etc/android.hardware.bluetooth_le.xml:system/etc/permissions/android.hardware.bluetooth_le.xml \
     frameworks/native/data/etc/android.hardware.bluetooth.xml:system/etc/permissions/android.hardware.bluetooth.xml \
-    \
     frameworks/native/data/etc/android.software.sip.xml:system/etc/permissions/android.software.sip.xml \
-    frameworks/native/data/etc/android.software.webview.xml:system/etc/permissions/android.software.webview.xml \
-    \
-    frameworks/native/data/etc/android.hardware.fingerprint.xml:system/etc/permissions/android.hardware.fingerprint.xml
+    frameworks/native/data/etc/android.software.webview.xml:system/etc/permissions/android.software.webview.xml
 
 PRODUCT_AAPT_CONFIG := normal hdpi xhdpi xxhdpi
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
@@ -74,12 +71,12 @@ PRODUCT_AAPT_PREF_CONFIG := xhdpi
 PRODUCT_CHARACTERISTICS := tablet
 
 DEVICE_PACKAGE_OVERLAYS := \
-    device/samsung/chagall-klimt-common/overlay-common
+    device/samsung/tabs-common/overlay-common
 
 PRODUCT_COPY_FILES += \
-    device/samsung/chagall-klimt-common/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
-    device/samsung/chagall-klimt-common/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
-    device/samsung/chagall-klimt-common/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf
+    device/samsung/tabs-common/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf \
+    device/samsung/tabs-common/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf \
+    device/samsung/tabs-common/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf
 
 PRODUCT_PACKAGES += \
     libwpa_client \
@@ -87,15 +84,6 @@ PRODUCT_PACKAGES += \
     dhcpcd.conf \
     wpa_supplicant \
     hostapd_default.conf
-
-# Live Wallpapers
-PRODUCT_PACKAGES += \
-    LiveWallpapersPicker \
-    librs_jni
-
-# Exchange
-PRODUCT_PACKAGES += \
-    Exchange
 
 PRODUCT_PACKAGES += \
     libstagefrighthw \
@@ -127,16 +115,14 @@ PRODUCT_PACKAGES += \
     gralloc.exynos5 \
     memtrack.exynos5
 
+# libstlport
+# M removes libstlport, but some of our binary-only prebuilts need it, so we'll
+# add it back
 PRODUCT_PACKAGES += \
     libstlport
 
 PRODUCT_PACKAGES += \
     consumerir.universal5420
-
-PRODUCT_PACKAGES += \
-    fingerprintd \
-    fingerprint.universal5420 \
-    ValidityService
 
 #Needed for at least adb on userbuild
 PRODUCT_PACKAGES += \
@@ -149,9 +135,6 @@ PRODUCT_PACKAGES += \
     lights.universal5420
 
 PRODUCT_PACKAGES += \
-    hwtest
-
-PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
 
 # Filesystem management tools
@@ -160,21 +143,13 @@ PRODUCT_PACKAGES += \
 
 # If using cm vold we support exfat and ntfs
 PRODUCT_PACKAGES += \
-    libfuse
-
-PRODUCT_PACKAGES += \
+    libfuse \
     libexfat \
     fsck.exfat \
     mkfs.exfat
-
-PRODUCT_PACKAGES += \
     libntfs-3g \
     fsck.ntfs \
     mkfs.ntfs
-
-# Charger
-PRODUCT_PACKAGES += \
-    charger_res_images
 
 # MobiCore setup
 PRODUCT_PACKAGES += \
@@ -197,9 +172,17 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     strace
 
-# Recovery
+# hardware/samsung/AdvancedDisplay (MDNIE)
 PRODUCT_PACKAGES += \
-    init.recovery.universal5420.rc
+    AdvancedDisplay
+
+# IO Scheduler
+PRODUCT_PROPERTY_OVERRIDES += \
+    sys.io.scheduler=bfq
+
+# call Samsung LSI board support package
+$(call inherit-product, hardware/samsung_slsi-cm/exynos5/exynos5.mk)
+$(call inherit-product, hardware/samsung_slsi-cm/exynos5420/exynos5420.mk)
 
 # Sensors
 PRODUCT_PACKAGES += \
@@ -219,16 +202,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.bq.gpu_to_cpu_unsupported=1
 
-# set default USB configuration
-# ORG
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp
-
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.egl.force_msaa=true
-
-#PRODUCT_PROPERTY_OVERRIDES += \
-#    debug.sf.disable_hwc=1
-
-$(call inherit-product, vendor/google/google-vendor.mk)
 

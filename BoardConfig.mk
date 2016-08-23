@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2015 The Android Open-Source Project
+# Copyright (C) 2016 The Android Open-Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,13 @@
 # limitations under the License.
 #
 
-LOCAL_PATH := device/samsung/chagall-klimt-common
+LOCAL_PATH := device/samsung/tabs-common
 
 # Platform
 BOARD_VENDOR := samsung
 TARGET_BOARD_PLATFORM := exynos5
-#TARGET_SLSI_VARIANT := 
-#The gralloc module from insignal is not compatible with camera in mm
-TARGET_SLSI_VARIANT := insignal
-#TARGET_SLSI_VARIANT := cm
+#TARGET_SLSI_VARIANT := insignal
+TARGET_SLSI_VARIANT := cm
 TARGET_SOC := exynos5420
 
 # Architecture
@@ -38,14 +36,6 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storag
 
 # Audio
 BOARD_USES_LIBMEDIA_WITH_AUDIOPARAMETER := true
-
-# Bionic
-TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
-
-# RIL
-BOARD_PROVIDES_LIBRIL := true
-# hardware/samsung/ril
-BOARD_MODEM_TYPE := xmm7260
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -68,42 +58,28 @@ WIFI_DRIVER_NVRAM_PATH_PARAM     := "/sys/module/dhd/parameters/nvram_path"
 WIFI_DRIVER_NVRAM_PATH           := "/system/etc/wifi/nvram_net.txt"
 
 # Camera
-# frameworks/av/services/camera/libcameraservice/Android.mk
-# frameworks/av/services/camera/libcameraservice/device1/CameraHardwareInterface.h
-# frameworks/native/libs/binder/Android.mk
-# frameworks/native/include/binder/IMemory.h
-# frameworks/native/libs/binder/IMemory.cpp
-# OK MERGED
+# COMMON_GLOBAL_CFLAGS += -DUSE_MEMORY_HEAP_ION
 BOARD_NEEDS_MEMORYHEAPION := true
-
-# NOT USED
-##COMMON_GLOBAL_CFLAGS += -DDISABLE_HW_ID_MATCH_CHECK
-
-# NOT USED
-##COMMON_GLOBAL_CFLAGS += -DSAMSUNG_CAMERA_HARDWARE
-
-# NOT USED
-##COMMON_GLOBAL_CFLAGS += -DSAMSUNG_DVFS
+COMMON_GLOBAL_CFLAGS += -DDISABLE_HW_ID_MATCH_CHECK
+COMMON_GLOBAL_CFLAGS += -DSAMSUNG_CAMERA_HARDWARE
+COMMON_GLOBAL_CFLAGS += -DSAMSUNG_DVFS
 
 # Force the screenshot path to CPU consumer
-# frameworks/native/libs/gui/SurfaceComposerClient.cpp
-# OK MERGED
 COMMON_GLOBAL_CFLAGS += -DFORCE_SCREENSHOT_CPU_PATH
 
 # Kernel
 BOARD_KERNEL_BASE := 0x10000000
 BOARD_KERNEL_PAGESIZE := 2048
-TARGET_KERNEL_CONFIG := cyanogenmod_chagalllte_defconfig
-TARGET_KERNEL_SOURCE := kernel/samsung/chagalllte
+TARGET_KERNEL_SOURCE := kernel/samsung/tabs
 
 # Charging mode
 BOARD_CHARGER_ENABLE_SUSPEND := true
 BOARD_CHARGER_SHOW_PERCENTAGE := true
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/class/power_supply/battery/batt_lp_charging
 BOARD_BATTERY_DEVICE_NAME := battery
+BACKLIGHT_PATH := "/sys/class/backlight/panel/brightness"
 
 # Bootloader
-TARGET_OTA_ASSERT_DEVICE := chagalllte
 TARGET_BOOTLOADER_BOARD_NAME := universal5420
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
@@ -116,6 +92,7 @@ BOARD_USES_NEON_BLITANTIH := true
 # Maximum size of the  GLES Shaders that can be cached for reuse.
 # Increase the size if shaders of size greater than 12KB are used.
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
+
 # Maximum GLES shader cache size for each app to store the compiled shader
 # binaries. Decrease the size if RAM or Flash Storage size is a limitation
 # of the device.
@@ -123,8 +100,7 @@ MAX_EGL_CACHE_SIZE := 2048*1024
 
 # Graphics
 USE_OPENGL_RENDERER := true
-BOARD_EGL_CFG := $(LOCAL_PATH)/egl.cfg
-NUM_FRAMEBUFFER_SURFACE_BUFFERS := 5
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 
 # Renderscript
 BOARD_OVERRIDE_RS_CPU_VARIANT_32 := cortex-a53
@@ -138,16 +114,9 @@ BOARD_USES_HWC_SERVICES := true
 # Include path
 TARGET_SPECIFIC_HEADER_PATH := $(LOCAL_PATH)/include
 
-# Init
-# NOT USED
-##TARGET_NR_SVC_SUPP_GIDS := 20
-
 # Media
 # Used if using slsi-cm  # use format from fw/native
 COMMON_GLOBAL_CFLAGS += -DUSE_NATIVE_SEC_NV12TILED
-
-# NOT USED
-##COMMON_GLOBAL_CFLAGS += -DWIDEVINE_PLUGIN_PRE_NOTIFY_ERROR
 
 # OpenMAX Video
 BOARD_USE_STOREMETADATA := true
@@ -162,68 +131,34 @@ BOARD_USE_QOS_CTRL := false
 BOARD_USE_S3D_SUPPORT := true
 BOARD_USE_VP8ENC_SUPPORT := true
 
-# Not yet compatible with art
-#WITH_DEXPREOPT := true
-#DONT_DEXPREOPT_PREBUILTS := true
-
 # If using cm vold we support exfat and ntfs
 TARGET_KERNEL_HAVE_EXFAT := true
 TARGET_KERNEL_HAVE_NTFS := true
 
-
-#default TARGET_USERIMAGES_USE_EXT4 := true
-#default BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := squashfs
-#default BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-
-#F2FS ->
-#TARGET_USERIMAGES_USE_EXT4 := false
-#TARGET_USERIMAGES_USE_F2FS := true
-#BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := f2fs
-#F2FS <-
-
-BOARD_BOOTIMAGE_PARTITION_SIZE := 8388608
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 9639936 
-BOARD_SYSTEMIMAGE_PARTITION_SIZE := 2506096640
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 12629049344
 BOARD_FLASH_BLOCK_SIZE := 4096
 
 # PowerHAL
-TARGET_POWERHAL_VARIANT := chagalllte
+TARGET_POWERHAL_VARIANT := samsung
 
 # Recovery
-COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
-BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_23x41.h\"
-BOARD_HAS_NO_SELECT_BUTTON := true
-TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.universal5420
-TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/ramdisk/fstab.universal5420
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_RECOVERY_SWIPE := true
-RECOVERY_GRAPHICS_USE_LINELENGTH := true
 
-# Scaler - OK MERGED
+# Samsung Gralloc
+TARGET_SAMSUNG_GRALLOC_EXTERNAL_USECASES := true
+
+# Scaler
 BOARD_USES_SCALER := true
-# Used by slsi-cm
 BOARD_USES_GSC_VIDEO := true
 
 # SELinux
 BOARD_SEPOLICY_DIRS += \
-	device/samsung/chagall-klimt-common/sepolicy
-
-# SurfaceFlinger - NOT USED !!!
-##BOARD_USES_SYNC_MODE_FOR_MEDIA := true
+	device/samsung/tabs-common/sepolicy
 
 # Webkit
 ENABLE_WEBGL := true
 
 # WFD
-# NOT USED
-##BOARD_USES_WFD_SERVICE := true
-# OK MERGED
 BOARD_USES_WFD := true
-
-# Enable Minikin text layout engine (will be the default soon)
-USE_MINIKIN := true
-
-# Include an expanded selection of fonts
-EXTENDED_FONT_FOOTPRINT := true
 
